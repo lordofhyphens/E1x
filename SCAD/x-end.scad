@@ -42,7 +42,7 @@ bushing_xy = [10, 8, 3, 0, "623 bearing"];
 
 difference()
 {
-  translate([0,0,30])import("STL Files/X_Axis_Idler_Block_-_1x.stl");
+  translate([0,0,30])import("../STL Files/X_Axis_Idler_Block_-_1x.stl");
   translate([0,-50,21])cube([18,50,18]);
   translate([37,-5,30]) rotate([90,0,0])cylinder(r=m4_diameter/2,h=20);
   color("blue")translate([-5,-20.5,21])cube([50,11,18]);
