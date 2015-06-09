@@ -1,6 +1,6 @@
 
 // 48mm separation, center to center
-rail_separation = 48;
+rail_separation = 41;
 socket_length = 15;
 mass_rotate = [0, 0, 90];
 mirrorblock = [1, 0, 0];
@@ -15,19 +15,15 @@ difference() {
       translate([10,20,10])rotate([90,0,0])
           scale([1.05,1.05,1.2])ext2020(l=socket_length, teeth=[0,0,0,0],depth=0);
     rotate(mass_rotate)
-    translate([23.5,38,rail_separation+0.45])  
+    translate([23.5,38,rail_separation-2])  
       translate([10,20,10])rotate([90,0,0])
-          scale([1.05,1.05,1.2])ext2020(l=socket_length, teeth=[0,0,0,0],depth=0);
-    rotate(mass_rotate)
-    translate([23.5,38,rail_separation+0.45])  
-      translate([10,20,10])rotate([90,0,0])
-          scale([1.05,1.05,1.2])ext2020(l=socket_length, teeth=[0,0,0,0]);
+          scale([1.05,1.0,1.2])ext2020(l=socket_length, teeth=[0,0,0,0],depth=0);
 }
 
     difference(){
       translate([60.5,1.5,0.45]) 
         translate([13,20,-0.5])
-        cube([18,24,71]);
+        cube([18,24,19+rail_separation]);
 
       translate([40.5,9.5,0.45]) 
         translate([10,20,15])

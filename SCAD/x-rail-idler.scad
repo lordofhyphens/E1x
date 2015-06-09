@@ -5,7 +5,7 @@ use <inc/bearing-guide.scad>
 use <inc/functions.scad>
 
 // 48mm separation, center to center
-rail_separation = 48;
+rail_separation = 41;
 
 difference() {
   union() {
@@ -46,9 +46,9 @@ difference() {
 
   // prusa-style idler
   translate([48.5,45,0])rotate([0,0,270]) {
-    translate([0,-50,21])cube([18,50,18]);
+    translate([0,-50,21])cube([18,50,17]);
     translate([37,-5,30]) rotate([90,0,0])cylinder(r=m4_diameter/2,h=20);
-    color("blue")translate([-5,-20.5,21])cube([50,11,18]); translate([0,0,42])cube([100,100,8]);
+    color("blue")translate([-5,-20.5,20.5])cube([50,11,18]); translate([0,0,42])cube([100,100,8]);
   }
 }
 
@@ -60,5 +60,5 @@ translate([11.5,36,10]) translate([10,20,10])cube([2,2,35]);
 translate([22+11.5,36,10]) translate([10,20,10])cube([2,2,35]);
 
 // spacer cube
-translate([11.5,14,10]) translate([10,20,30])cube([24,24,8.0]);
+*translate([11.5,14,10]) translate([10,20,30])cube([24,24,8.0]);
 

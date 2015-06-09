@@ -15,7 +15,7 @@ translate([plate[0]/2-extruder_x/2,plate[1]/2,7])
   }
 
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
-rail_separation = 48;
+rail_separation = 41;
 rail_size = 20;
 wheel_offset = 20;
 wheel_od = 25;
