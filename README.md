@@ -1,5 +1,5 @@
 # E1x
-E1x Printer Files - "Lulzbot special"
+E1x Printer Files - "V-Slot Lulzbot special"
 
 BOM located here - http://goo.gl/RWq3ZI
 
@@ -11,8 +11,12 @@ http://devel.lulzbot.com/TAZ/Juniper/production_parts/printed_parts/bed_corner/
 Otherwise, edit SCAD/lulz-cornermount to suit the size of your printbed.
 The STL is pre-sized for a 12"x12" piece.
 
-It is recommended to increase the Y extrusions to 485mm and the Y smooth rod length to 505mm. It may be advantageous to use 10mm smooth rods instead at these lengths. For 10mm smooth rods, either use LM10UU bearings or RJM-01-10 polymer bushings (https://www.lulzbot.com/products/solid-polymer-bearing-rjm-01-10mm) or nylon.
+This variant employs Vslot on the X and Y axes. This arrangement is
+experimental, it may take a few re-prints of parts to get things to line up
+(particularly the Y axis parts with the printbed).
 
-10mm bearing holder in STL Files is a copy of and was made by Lulzbot:
-http://devel.lulzbot.com/TAZ/Juniper/production_parts/printed_parts/bearing_holder/
+The X motor and idler endsshould be printed at 0.2mm layer height or lower.  If
+using slic3r or another program capable of doing so, use 0.1mm layer heights
+between 20.5mm and 21.1mm
+
 
