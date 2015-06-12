@@ -42,7 +42,7 @@ difference() {
     translate([0,0,-3])ext2020(l=20, teeth=[0,0,0,0]);
   translate([23.5,38,rail_separation+0.45]) 
     translate([10,20,10])rotate([90,0,0])
-    translate([0,0,-3])ext2020(l=20, teeth=[1,1,0,0],depth=0);
+    translate([0,0,-3])ext2020(l=20, teeth=[0,0,0,1],depth=0);
   translate([23.5,38,-5+0.45]) 
     translate([10,20,10])rotate([90,0,0])
     translate([0,0,-3])ext2020(l=20, teeth=[0,0,0,1],depth=0);
