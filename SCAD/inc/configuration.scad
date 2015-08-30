@@ -58,7 +58,7 @@ rotaryBearing=xx623;// for readability(can be changed if other bearings are used
 //====================//
 smoothRod=8;				// diameter of smooth rods in mm
 linearBearing=lm8uu;	// change this to the linear bearing you are using from the definitions section
-zRod=M5;				// change this to the z threaded rod you are using from the definitions section
+zRod=M8;				// change this to the z threaded rod you are using from the definitions section
 zRodnut=M5nut;		// change this to the z nut you are using from the definitions section
 zRodnutThickness=M5nutThickness;	// change this to the z nut thickness you are using from the definitions section
 

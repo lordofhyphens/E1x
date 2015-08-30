@@ -3,7 +3,44 @@ belt_space_cutout=9.5;
 end_body_shift=13;
 shifted_rails=end_body_shift-7;
 
+module nut_bracket(shadow=false, type="8x8_square") {
+  if (type == "8x8_square")
+    end_bracket_8x8(shadow);
+}
+
+module end_bracket_8x8(shadow=false) {
+  translate([0,0,-2]) {
+    if (shadow == true) 
+      for (i = [-10, 10])
+        translate([i,0,0])
+        { 
+          cylinder(r=M5/2 - tolerance, h=10);
+          if (i == -10) {
+            hull() {
+               
+              translate([0,0,6])cylinder(r=M5nut/2+tolerance, h=M5nutThickness, $fn=6);
+              translate([-20,0,6])cylinder(r=M5nut/2+tolerance, h=M5nutThickness, $fn=6);
+            }
+          } else {
+          translate([0,0,6])cylinder(r=M5nut/2, h=M5nutThickness, $fn=6);
+          }
+        }
+    if (shadow == false) 
+      difference() {
+        cube([40,20,4], center=true);
+        translate([0,0,-4])cylinder(r=M8/2, h=40);
+        for (i = [-10, 10])
+          translate([i,0,0])
+              {
+                cylinder(r=M5/2, h=40);
+                translate([0,0,10])cylinder(r=M5nut/2, h=M5nutThickness);
+              }
+      }
+  }
+}
+translate([100,100,2]) end_bracket_8x8(true);
 module x_idler(idler_cutouts=true) {
+
   difference() {
     union() {
       translate([(lm8uu[1]/2)+3, (lm8uu[1]/2)+3,0]) union() {
@@ -15,7 +52,7 @@ module x_idler(idler_cutouts=true) {
       }
       translate([lm8uu[1]+end_body_shift,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
       translate([(2*28/3)+shifted_rails,length_to_hole-10,0])roundcube([28,30,outer_height]);
-      translate([lm8uu[1]+end_body_shift,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
+      translate([lm8uu[1]+end_body_shift+(zRod-M5),shaft_offset[1]+zRod-3-(zRod-M5),0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3 + (zRod-M5),zRodnut+4+6+(zRod-M5),3+zRodnutThickness]);
     }
 
     union() {
@@ -26,7 +63,8 @@ module x_idler(idler_cutouts=true) {
           translate([0,15/2,outer_height/2])cube([2,15,outer_height], center=true);
         translate([shaft_offset[0], shaft_offset[1], 0]) 
         {
-          cylinder(r=zRod/2, h=10);
+          nut_bracket(shadow=true);
+          cylinder(r=zRod/2 + tolerance, h=10);
           translate([0,0,3])cylinder(r=zRodnut/2 + tolerance, h=zRodnutThickness+tolerance, $fn=6);
         }
       }
