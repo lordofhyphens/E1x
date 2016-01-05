@@ -22,10 +22,10 @@ distance_to_belt_center = 13;
 shift_in=3.5;
 difference() {
   union() {
-    translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x*1.2, belt_z_space-4,belt_z_space-3-shift_in+16], center=true);
+    translate([0,-3,(belt_z_space-3/2)])roundcube([extruder_x*1.2, belt_z_space-4,belt_z_space-3-shift_in+6], center=true);
     *translate([0,0,belt_z_space])rotate([0,0,-90])beltloop(top_width=13, top_length=extruder_x*1.2, belt_width=6.2+shift_in);
   }
-  translate([0,-2,plate[2]+6]) {
+  translate([0,-2-3,plate[2]+6]) {
     translate([18,1,0])
     {
       translate([0,0,-2])
@@ -100,7 +100,7 @@ difference() {
         }
       }
   }
-  translate([0,-1,-1]) {
+  translate([0,-1-3,-1]) {
     translate([18,0,0])
     #cylinder(r=M3/2, h=40);
   }
