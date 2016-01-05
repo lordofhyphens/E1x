@@ -22,13 +22,24 @@ distance_to_belt_center = 13;
 shift_in=3.5;
 difference() {
   union() {
-    translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x*1.2, belt_z_space-4,belt_z_space-3-shift_in], center=true);
+    translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x*1.2, belt_z_space-4,belt_z_space-3-shift_in+16], center=true);
     *translate([0,0,belt_z_space])rotate([0,0,-90])beltloop(top_width=13, top_length=extruder_x*1.2, belt_width=6.2+shift_in);
   }
-  translate([0,-2,plate[2]]) {
-    for (i = [-8,8])
-    translate([i,0,0])
-    cylinder(r=M3/2, h=20);
+  translate([0,-2,plate[2]+6]) {
+    translate([18,1,0])
+    {
+      translate([0,0,-2])
+      cylinder(d=M3, h=20);
+      translate([0,0,2])
+        cylinder(d=8, h=5);
+    }
+    translate([-18,5,6])
+    {
+    translate([10,6.5,0])
+      #rotate([90,0,0]) cylinder(d=M3, h=20);
+    translate([0,-3,0])
+      #cube([28,6,11], center=true);
+    }
   }
 }
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
@@ -89,10 +100,9 @@ difference() {
         }
       }
   }
-  translate([0,2,0]) {
-    for (i = [-8,8])
-    translate([i,0,0])
-    cylinder(r=M3/2, h=20);
+  translate([0,-1,-1]) {
+    translate([18,0,0])
+    #cylinder(r=M3/2, h=40);
   }
   #translate([0,24,0])cylinder(r=14, h=20);
   #translate([0,-26,0])cylinder(r=8, h=20);
