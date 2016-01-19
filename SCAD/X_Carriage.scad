@@ -16,32 +16,10 @@ mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version 
 measured_rail_edge_to_edge=58.82;
 bearing_to_vslot=10.10;
 fudge_distance=0;
-wheel_separation = measured_rail_edge_to_edge+(2*bearing_to_vslot)-fudge_distance;
+wheel_separation = 40+(2*bearing_to_vslot)-fudge_distance;
 //wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
 shift_in=3.5;
-difference() {
-  union() {
-    translate([0,-3,(belt_z_space-3/2)])roundcube([extruder_x*1.2, belt_z_space-4,belt_z_space-3-shift_in+6], center=true);
-    *translate([0,0,belt_z_space])rotate([0,0,-90])beltloop(top_width=13, top_length=extruder_x*1.2, belt_width=6.2+shift_in);
-  }
-  translate([0,-2-3,plate[2]+6]) {
-    translate([18,1,0])
-    {
-      translate([0,0,-2])
-      cylinder(d=M3, h=20);
-      translate([0,0,2])
-        cylinder(d=8, h=5);
-    }
-    translate([-18,5,6])
-    {
-    translate([10,6.5,0])
-      #rotate([90,0,0]) cylinder(d=M3, h=20);
-    translate([0,-3,0])
-      #cube([28,6,11], center=true);
-    }
-  }
-}
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
 rail_size = 20;
 wheel_offset = 20;
@@ -56,7 +34,6 @@ wades_x_sep = 50;
 wades_y_sep = 0;
 prusa_x_sep = 30;
 prusa_y_sep = 0;
-
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
 plate_y = wheel_separation + 20;
 plate = [extruder_x + 20, plate_y, 7];
@@ -64,25 +41,32 @@ echo("Tolerance: ", tolerance);
   if (standoff) 
 translate([plate[0]*2,0,0])
   difference() {
-    translate([plate[0]/2 - ((extruder_x-2)/2), plate[1]/2 - extruder_z/2,0])
-      roundcube([extruder_x-2,extruder_z,7]);
+    translate([0,  0, plate[1]/2 - extruder_z/2,0])
+      roundcube([extruder_x-2,extruder_z,7], center=true);
 
     translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-    translate([extruder_x/2,extruder_z/2-8,0])cylinder(r=8, h=20);
+    translate([-10, -22,-5])cylinder(r=8, h=20);
     translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      translate([-10,-10,5]) {
+      translate([-10,0,5]) {
       for (j = [1,-1]) // extruder reworking holes
         for (i = [1,-1])
-          translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
+          translate([i*rework_x_sep/2, j*rework_y_sep/2,0])
           {
             translate([0,-21.5,0]) {
               #translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=15, $fs=0.1);
             } 
           }
       }
+
   }
 difference() {
   translate([0,0,plate[2]/2])roundcube(plate, center=true);
+
+  for (j = [24, -24])
+   for (i = [10,-10])
+    translate([j,i,0])
+      #cube([3,10,30], center=true);
+
   translate([0,fudge_distance/2,0])
   { // holes for v wheel mounting
     for (i = [1 , -1])
@@ -100,15 +84,10 @@ difference() {
         }
       }
   }
-  translate([0,-1-3,-1]) {
-    translate([18,0,0])
-    #cylinder(r=M3/2, h=40);
-  }
-  #translate([0,24,0])cylinder(r=14, h=20);
-  #translate([0,-26,0])cylinder(r=8, h=20);
+  #translate([0,-5,0])cylinder(r=8, h=20);
   if (mount_type == "rework")
   {
-    translate([0,-25,0])
+    translate([0,-5,0])
       for (j = [1,-1]) // extruder reworking holes
         for (i = [1,-1])
           translate([i*rework_x_sep/2, j*rework_y_sep/2,0])
@@ -158,3 +137,5 @@ difference() {
 include <inc/configuration.scad>
 include<inc/metric.scad>
 include<MCAD/nuts_and_bolts.scad> // MCAD library
+include<inc/extrusions.scad>
+include<inc/vslot.scad>
