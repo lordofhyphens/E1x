@@ -15,7 +15,7 @@ module x_idler(idler_cutouts=true) {
         }
       }
       translate([lm8uu[1]+end_body_shift,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
-      translate([(2*26/3)+shifted_rails,length_to_hole-10-35,0])roundcube([32,length_to_hole+20+30,outer_height]);
+      translate([(2*26/3)+shifted_rails,length_to_hole-10-35,0])roundcube([32,length_to_hole+25,outer_height]);
       translate([lm8uu[1]+end_body_shift,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
     }
 
