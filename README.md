@@ -1,5 +1,5 @@
-# E1x
-E1x Printer Files - "V-Slot Lulzbot special"
+# E1x-V
+E1x-V Printer Files - "V-Slot Lulzbot special"
 
 BOM located here - https://goo.gl/lIcXZe
 
