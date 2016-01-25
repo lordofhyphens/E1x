@@ -7,8 +7,11 @@ module x_idler(idler_cutouts=true) {
   difference() {
     union() {
       translate([(lm8uu[1]/2)+3, (lm8uu[1]/2)+3,0]) union() {
+
+        *translate([0,vwheel_r()*2 + 20,15])rotate([0,90,0]) vwheel();
+        *translate([0,vwheel_r()*2 + 20,vwheel_r()*2 + 10+10])rotate([0,90,0]) vwheel();
+        translate([0,0,10+10])rotate([0,90,0]) vwheel();
         hull() {
-          cylinder(r=lm8uu[1]/2 + 3, h = lm8uu[2]*2); // outer
           translate([-((lm8uu[1]/2)+4), -((lm8uu[1]/2)+4),0])
             translate([lm8uu[1]+end_body_shift+4,0,0])
             roundcube([20,30,lm8uu[2]*2]);
@@ -22,9 +25,15 @@ module x_idler(idler_cutouts=true) {
     union() {
       translate([(lm8uu[1]/2)+3, (lm8uu[1]/2)+3,0]) 
       {
-        cylinder(r=lm8uu[1]/2-tol, h=lm8uu[2]*2);
-        rotate([0,0,-25])
-          translate([0,15/2,outer_height/2])cube([2,15,outer_height], center=true);
+
+        #translate([10,vwheel_r()*2 + 20,15])rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
+        #translate([10,vwheel_r()*2 + 20,vwheel_r()*2 + 10+10])rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
+
+        #translate([10,0,10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
+        #translate([10,0,20+10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
+        #translate([10,0,20+10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
+        
+
         translate([shaft_offset[0], shaft_offset[1], 0]) 
         {
           cylinder(r=zRod/2, h=10);
@@ -36,11 +45,9 @@ module x_idler(idler_cutouts=true) {
           {
             translate([0,0,(60+tol)/2])
               #rotate([0,90,0])ext2040(l=150, tolerance=tol+.5, teeth=[0,0,1,0,0,0]);
-            #translate([104,20,10+10])rotate([90,90,0])cylinder(d=M5 + tol, h = 40);
-            #translate([104,20,20+10+10])rotate([90,90,0])cylinder(d=M5 + tol, h = 40);
           }
         }
-      for (i = [10, 25, 40, 60, 80])
+      for (i = [5, 20, 38, 55, 80])
       {
         translate([lm8uu[1]+23.5,i,-10])#cylinder(d=M5+(tol * 2), h=outer_height);
     }
@@ -57,7 +64,7 @@ module x_motor() {
     
       translate([lm8uu[1]+end_body_shift-10,-38-5,0])
       roundcube([45,49,4]);
-      hull() translate([lm8uu[1]+end_body_shift-15,0,40])
+      hull() translate([lm8uu[1]+end_body_shift+30,0,40])
 
       {
         translate([0,0,-37])
@@ -67,6 +74,7 @@ module x_motor() {
         translate([0,0,5])
           rotate([0,90,0])cylinder(r=3,h=7);
       }
+      translate([lm8uu[1]+end_body_shift+22,0,0]) roundcube([12,4,outer_height]);
     }
     translate([28/2+(2*28/3)+shifted_rails+0,-23,0]) 
     #linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tol=tolerance);
@@ -85,3 +93,4 @@ x_idler();
 
 use <MCAD/motors.scad>
 use <inc/extrusions.scad>
+use <inc/vslot.scad>
