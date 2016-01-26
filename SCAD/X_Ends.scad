@@ -10,16 +10,17 @@ module x_idler(idler_cutouts=true) {
 
         *translate([0,vwheel_r()*2 + 20,15])rotate([0,90,0]) vwheel();
         *translate([0,vwheel_r()*2 + 20,vwheel_r()*2 + 10+10])rotate([0,90,0]) vwheel();
-        translate([0,0,10+10])rotate([0,90,0]) vwheel();
+        *translate([0,0,10+10])rotate([0,90,0]) vwheel();
         hull() {
           translate([-((lm8uu[1]/2)+4), -((lm8uu[1]/2)+4),0])
             translate([lm8uu[1]+end_body_shift+4,0,0])
             roundcube([20,30,lm8uu[2]*2]);
         }
+
       }
       translate([lm8uu[1]+end_body_shift,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
       translate([(2*26/3)+shifted_rails,length_to_hole-10-35,0])roundcube([32,length_to_hole+25,outer_height]);
-      translate([lm8uu[1]+end_body_shift,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
+      translate([lm8uu[1]+end_body_shift,shaft_offset[1]+zRod-6,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+14+6,3+zRodnutThickness]);
     }
 
     union() {
@@ -36,8 +37,8 @@ module x_idler(idler_cutouts=true) {
 
         translate([shaft_offset[0], shaft_offset[1], 0]) 
         {
-          cylinder(r=zRod/2, h=10);
-          translate([0,0,3])rotate([0,0,30])cylinder(d=zRodnut + tol*4, h=zRodnutThickness+tolerance, $fn=6);
+        rotate([0,0,90])
+          znut(true);
         }
       }
       translate([28/2+(2*28/3)+shifted_rails,length_to_hole-6.5,0])
@@ -94,3 +95,4 @@ x_idler();
 use <MCAD/motors.scad>
 use <inc/extrusions.scad>
 use <inc/vslot.scad>
+use <znut.scad>
