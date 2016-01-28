@@ -27,12 +27,13 @@ module x_idler(idler_cutouts=true) {
       translate([(lm8uu[1]/2)+3, (lm8uu[1]/2)+3,0]) 
       {
 
-        #translate([10,vwheel_r()*2 + 20,15])rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
-        #translate([10,vwheel_r()*2 + 20,vwheel_r()*2 + 10+10])rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
+        #translate([10,20-vwheel_r()*2, 15])
+          rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
+        #translate([10,20-vwheel_r()*2,vwheel_r()*2 + 10+10])
+          rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
 
-        #translate([10,0,10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
-        #translate([10,0,20+10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
-        #translate([10,0,20+10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
+        #translate([10,20+20,10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
+        #translate([10,20+20,20+10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
         
 
         translate([shaft_offset[0], shaft_offset[1], 0]) 
