@@ -2,83 +2,71 @@ tol=0.45;
 belt_space_cutout=9.5;
 end_body_shift=13;
 shifted_rails=end_body_shift-7;
+offset_from_rail = (17+6) - 10;
+// center it on the Zx extrusion
 
+*translate([0,0,0])ext2020(l=400);
+
+// offset main block 17mm in Y
 module x_idler(idler_cutouts=true) {
+  width=35;
+  length=60;
   difference() {
     union() {
-      translate([(lm8uu[1]/2)+3, (lm8uu[1]/2)+3,0]) union() {
-
-        *translate([0,vwheel_r()*2 + 20,15])rotate([0,90,0]) vwheel();
-        *translate([0,vwheel_r()*2 + 20,vwheel_r()*2 + 10+10])rotate([0,90,0]) vwheel();
-        translate([0,0,10+10])rotate([0,90,0]) vwheel();
-        hull() {
-          translate([-((lm8uu[1]/2)+4), -((lm8uu[1]/2)+4),0])
-            translate([lm8uu[1]+end_body_shift+4,0,0])
-            roundcube([20,30,lm8uu[2]*2]);
-        }
+      translate([width/2+offset_from_rail,0,outer_height/2]) union() {
+        roundcube([width,length,outer_height], center=true);
       }
-      translate([lm8uu[1]+end_body_shift,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
-      translate([(2*26/3)+shifted_rails,length_to_hole-10-35,0])roundcube([32,length_to_hole+25,outer_height]);
-      translate([lm8uu[1]+end_body_shift,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
+      translate([shaft_offset[0],shaft_offset[1],outer_height-(5/2)]) 
+        roundcube([20,20,5], center=true);
+    }
+  translate([width/2+offset_from_rail,length/2 + 10,outer_height/2])
+    rotate([90,90,0])#ext2040(l=length+20, teeth=[0,0,0,0,0,1], tolerance=0.4);
+  for (i = [0, 15, -20])
+  translate([width/2+offset_from_rail,i,outer_height/2])
+    #cylinder(d=M5, h=40);
+    
+  for ( i = [17.5, 18+(vwheel_r()*2)])
+  translate([-width/2,(vwheel_r()+10), i])
+    rotate([0,90,0])
+    {
+    #cylinder(d=M5, h=40);
+    translate([0,0,38-M5nutThickness])#cylinder(d=M5nut, h=M5nutThickness, $fn=6);
     }
 
-    union() {
-      translate([(lm8uu[1]/2)+3, (lm8uu[1]/2)+3,0]) 
-      {
-
-        #translate([10,20-vwheel_r()*2, 15])
-          rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
-        #translate([10,20-vwheel_r()*2,vwheel_r()*2 + 10+10])
-          rotate([0,90,0]) cylinder(d=M5 + tol, h = 40);
-
-        #translate([10,20+20,10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
-        #translate([10,20+20,20+10+10])rotate([0,90,0])cylinder(d=M5 + tol, h = 40);
-        
-
-        translate([shaft_offset[0], shaft_offset[1], 0]) 
-        {
-          cylinder(r=zRod/2, h=10);
-          translate([0,0,3])rotate([0,0,30])cylinder(d=zRodnut + tol*4, h=zRodnutThickness+tolerance, $fn=6);
-        }
-      }
-      translate([28/2+(2*28/3)+shifted_rails,length_to_hole-6.5,0])
-        translate([0,-90,0])rotate([0,0,90])union() {
-          {
-            translate([0,0,(60+tol)/2])
-              #rotate([0,90,0])ext2040(l=150, tolerance=tol+.5, teeth=[0,0,1,0,0,0]);
-          }
-        }
-      for (i = [5, 20, 38, 55, 80])
-      {
-        translate([lm8uu[1]+23.5,i,-10])#cylinder(d=M5+(tol * 2), h=outer_height);
+  for ( i = [outer_height/2])
+  translate([-width/2,-(vwheel_r()+10), i])
+    rotate([0,90,0])
+    {
+    #cylinder(d=M5, h=40);
+    translate([0,0,38-M5nutThickness])#cylinder(d=M5nut, h=M5nutThickness, $fn=6);
     }
 
-    }
+
+  #translate([shaft_offset[0],shaft_offset[1],outer_height-5])rotate([0,0,90])znut_holes();
+
   }
-
-
 }
 module x_motor() {
   x_idler(idler_cutouts=false);
   difference() {
     union() {
-    
-      translate([lm8uu[1]+end_body_shift-10,-38-5,0])
-      roundcube([45,49,4]);
-      hull() translate([lm8uu[1]+end_body_shift+30,0,40])
-
-      {
-        translate([0,0,-37])
-        rotate([0,90,0])cylinder(r=3,h=7);
-        translate([0,-38,-37])
-          rotate([0,90,0])cylinder(r=3,h=7);
-        translate([0,0,5])
-          rotate([0,90,0])cylinder(r=3,h=7);
-      }
-      translate([lm8uu[1]+end_body_shift+22,0,0]) roundcube([12,4,outer_height]);
+      translate([30/2+offset_from_rail, -60/2 - 49/2+4,outer_height-4/2])
+      roundcube([45,49,4],center=true);
+      for (i = [-21, 21])
+        translate([30/2+offset_from_rail+i, -60/2,outer_height/2])
+        {
+          translate([(-i/21)*4.5, 2,0])
+          cube([12,4,outer_height],center=true);
+          hull() {
+            cylinder(d=3, h=outer_height,center=true);
+            translate([0,-43,outer_height/2-4])
+              cylinder(d=3, h=4);
+          }
+        }
     }
-    translate([28/2+(2*28/3)+shifted_rails+0,-23,0]) 
-    #linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tol=tolerance);
+
+    translate([30/2+offset_from_rail, -60/2 - 49/2,outer_height-30])
+      #linear_extrude(height=30)stepper_motor_mount(17, mochup=false, tol=tolerance);
 
 
   }
@@ -87,11 +75,14 @@ include <inc/configuration.scad>
 use <inc/functions.scad>
 outer_height=55;
 
-mirror([0,1,0])
+mirror([0,0,1])
+{
 x_motor();
+mirror([0,1,0])
 translate([-60,-60,0])
-x_idler();
-
-use <MCAD/motors.scad>
-use <inc/extrusions.scad>
-use <inc/vslot.scad>
+  x_idler();
+}
+  use <MCAD/motors.scad>
+  use <inc/extrusions.scad>
+  use <inc/vslot.scad>
+  use <znut.scad>

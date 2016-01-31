@@ -3,8 +3,8 @@ module ext4040(l=20, teeth = [1, 1, 1, 1, 1, 1, 1, 1], depth=1.5, tolerance=0.2)
   translate([0,-10,0])ext2040(l=l, teeth = [0,0,teeth[3],teeth[4],teeth[5], teeth[6]]);
 }
 module ext2040(l=20, teeth = [1, 1, 1, 1, 1, 1], depth=1.5, tolerance=0.2) {
-  translate([10,0,0])ext2020(l=l, teeth = [teeth[2],0,teeth[1],teeth[3]], tolerance=tolerance);
-  translate([-10,0,0])ext2020(l=l, teeth = [0,teeth[5],teeth[0],teeth[4]], tolerance=tolerance);
+  translate([10+tolerance/2,0,0])ext2020(l=l, teeth = [teeth[2],0,teeth[1],teeth[3]], tolerance=tolerance);
+  translate([-10-tolerance/2,0,0])ext2020(l=l, teeth = [0,teeth[5],teeth[0],teeth[4]], tolerance=tolerance);
 }
 module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1.5, tolerance=0.2) {
   scale([1,1,1])translate([0,0,l/2])
