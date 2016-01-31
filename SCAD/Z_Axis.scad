@@ -124,14 +124,14 @@ module z_upper(height=25, tolerance=0.2, motor=true)
       }
       if (motor) 
       {
-        translate([0,-8,0])roundcube([70,45,3]);
+        translate([0,-8,0])roundcube([shaft_offset[0]+20,45,3]);
         for (i = [1.5, 44])
         { 
           translate([0,i,0]) hull()
             {
               translate([wall_width,-10+wall_width,height-wall_width])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
-              translate([-2*wall_width+70,-10+wall_width,wall_width])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
-              translate([wall_width,-10+wall_width,wall_width])cube([wall_width*2,wall_width*2,wall_width*2],center=true);
+              translate([-2*wall_width+(shaft_offset[0]+20),-10+wall_width,wall_width])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
+              translate([wall_width,-10+wall_width,wall_width/2])cube([wall_width*2,wall_width*2,wall_width*2],center=true);
             }
         }
       }
