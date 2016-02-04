@@ -11,7 +11,7 @@ http://devel.lulzbot.com/TAZ/Juniper/production_parts/printed_parts/bed_corner/
 Otherwise, edit SCAD/lulz-cornermount to suit the size of your printbed.
 The STL is pre-sized for a 12"x12" piece.
 
-This variant employs Vslot on the X and Y axes. This arrangement is
+This variant employs Vslot on all 3 axex. This arrangement is
 experimental, it may take a few re-prints of parts to get things to line up
 (particularly the Y axis parts with the printbed).
 
