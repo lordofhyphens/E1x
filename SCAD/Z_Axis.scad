@@ -118,8 +118,8 @@ module z_upper(height=25, tolerance=0.2, motor=true)
     {
       hull() 
       {
-        translate([0,0,height/2])roundcube([26,26,height], r=3,center=true);
-        translate([0,26,height/2])roundcube([26,26,height], r=3,center=true);
+        translate([0,2,0])translate([0,0,height/2])roundcube([30,32,height], r=3,center=true);
+        translate([0,28,height/2])roundcube([30,32,height], r=3,center=true);
         cylinder(r=17/2, h= height);
       }
       if (motor) 
@@ -127,11 +127,11 @@ module z_upper(height=25, tolerance=0.2, motor=true)
         translate([0,-8,0])roundcube([shaft_offset[0]+20,45,3]);
         for (i = [1.5, 44])
         { 
-          translate([0,i,0]) hull()
+          translate([0,i,1]) hull()
             {
-              translate([wall_width,-10+wall_width,height-wall_width])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
-              translate([-2*wall_width+(shaft_offset[0]+20),-10+wall_width,wall_width])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
-              translate([wall_width,-10+wall_width,wall_width/2])cube([wall_width*2,wall_width*2,wall_width*2],center=true);
+              translate([wall_width+12,-10+wall_width,height-wall_width-5])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
+              translate([-2*wall_width+(shaft_offset[0]+20),-10+wall_width,wall_width/2])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
+              translate([wall_width,-10+wall_width,wall_width])cube([wall_width*2,wall_width*2,wall_width*2],center=true);
             }
         }
       }
@@ -141,13 +141,13 @@ module z_upper(height=25, tolerance=0.2, motor=true)
       #ext2040(l=26, depth=0.75, tolerance=tolerance);
       cube([10,10,10],center=true);
     }
-    #translate([0,13+3,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
-    for (y = [48, 26]) 
+    #translate([0,13+5,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
+    for (y = [48, 28, 0]) 
       #translate([-20,y,((height-3) / 2)+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
-    for (y = [10]) 
+    for (y = [5]) 
       #translate([0,y,((height-3) / 2)+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=40);
     if (motor) {
-      translate([shaft_offset[0],shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance);
+      translate([shaft_offset[0],shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
     }
   }
 }
