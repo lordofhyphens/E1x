@@ -52,17 +52,19 @@ module upper_bracket_single(angle1, fudge, support = true, tolerance=0.5)
       union() 
       {
         translate([0,0,-3.5])roundcube([30,30,58],center=true);
+        rotate([0,90,0])
+        translate([20,0,40/2 - 15])roundcube([30,30,40],center=true);
       }
       translate([0,0,10])
         rotate([0,angles1[0],0])
         {
-          ext2020(l=40, teeth=[0,0,1,1], depth=1.8, tolerance=tolerance);
+          #ext2020(l=40, teeth=[0,0,1,1], depth=1.8, tolerance=tolerance);
           translate([0,30,8])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=60);
         }
-      translate([-25,0,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
-      translate([-25,-15,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
-      translate([0,0,-40])rotate([0,0,90])cylinder(r=M5/2 + tolerance, h=20); 
-      translate([0,12,-20])rotate([90,0,0]) boltHole(size=5, length=10);
+      #translate([-25,0,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
+      #translate([-25,0,-25])rotate([0,90,0])ext2020(l=55,teeth=[0,0,0,0], tolerance=tolerance);
+      for (z = [-5, 15])
+      #translate([z,22,-20])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=40); 
     }
   }
 }
@@ -102,57 +104,36 @@ module upper_bracket(angle1, angle2, fudge, support = true)
   }
 }
 
-module lower_bracket(angles, support=true, stacked=false, tolerance=0.4) 
+module lower_bracket(angles, support=true, tolerance=0.4) 
 {
+  back_wall_y=z_rod_to_extrusion+13+5+10;
   difference() {
     union() {
       rotate([0,90,0]) 
-        translate([0,-25.5,-2.5])roundcube([25,28.5,55], center=true);
-      if (stacked) {
-        translate([0,-22,30])
-        rotate([0,angles[2],0]) 
-          difference()
-          { 
-            translate([0,-3.5,5])roundcube([30,28.5,40], center=true);
-            translate([-15,-2.0,14])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=30);
-          }
-        translate([-5,-25.5,5])roundcube([30,28.5,40], center=true);
-      } else {
+        translate([0,-25.5,-5])cube([25,28.5,30], center=true);
+      {
         translate([-1,0,-3])
-        rotate([0,angles[2],0]) 
+          rotate([0,angles[2],0]) 
           difference()
           { 
-            translate([0,-2.5,5])roundcube([30,25,40], center=true);
-            translate([-15,-5,14])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=30);
+            translate([0,-(2.5+back_wall_y),5])roundcube([30,30,40], center=true);
+            translate([-15,0,10])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=30);
           }
       }
     }
-    if (stacked) {
-      translate([0,-22,30])
-      rotate([0,angles[2],0]) 
-          translate([0,-2,0])ext2020(l=50, teeth=[1,1,1,1], tolerance=tolerance, depth=1);
-    } else {
     translate([-1,0,-3])
-    rotate([0,angles[2],0]) 
-          translate([0,-5,0])
-          {
-            translate([0,0,5])ext2020(l=50, teeth=[1,1,1,0], tolerance=tolerance, depth=2);
-            ext2020(l=10, teeth=[1,1,1,0], tolerance=tolerance, depth=3);
-          }
+      rotate([0,angles[2],0]) 
+      translate([0,-(5+back_wall_y),0])
+      {
+        translate([0,0,5])ext2020(l=50, teeth=[1,1,1,0], tolerance=tolerance, depth=2);
+        ext2020(l=10, teeth=[1,1,1,0], tolerance=tolerance, depth=3);
+      }
 
-    }
-    translate([0,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,1], tolerance=tolerance);
-    translate([-14,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0], tolerance=tolerance);
-    translate([16,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0], tolerance=tolerance);
-    translate([20,-13,-10])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0], tolerance=tolerance);
-    translate([0,-25,-14])cylinder(r=M5/2 + tolerance, h=40);
-    translate([-100,-100,-32.5])cube([200,200,20]);
-  }
-  if (support) {
-    *translate([-15,-35,-10.5])support_cyl(r=1.75, h=21);
-    *translate([1.5,-36,-10.5])support_cyl(r=1.25, h=21);
-    translate([23.2,-38,-12.5])support_cyl(r=1.75, h=23);
-    *translate([-1.0,-17,-10.5])support_cyl(r=1.25, h=21);
+    #translate([0,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,1], tolerance=tolerance);
+    #translate([16,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0], tolerance=tolerance);
+    #translate([0,-25,-14])cylinder(r=M5/2 + tolerance, h=40);
+    #translate([-20,-25,0])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
+    #translate([-100,-100,-32.5])cube([200,200,20]);
   }
 }
 include <inc/configuration.scad>
