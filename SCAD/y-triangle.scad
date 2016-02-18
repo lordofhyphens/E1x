@@ -61,10 +61,10 @@ module upper_bracket_single(angle1, fudge, support = true, tolerance=0.5)
           #ext2020(l=40, teeth=[0,0,1,1], depth=1.8, tolerance=tolerance);
           translate([0,30,8])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=60);
         }
-      #translate([-25,0,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
-      #translate([-25,0,-25])rotate([0,90,0])ext2020(l=55,teeth=[0,0,0,0], tolerance=tolerance);
+      #translate([-25,0,-20])rotate([0,90,0])ext2020(l=60,teeth=[0,0,0,0], tolerance=tolerance);
+      translate([-25,0,-25])rotate([0,90,0])ext2020(l=55,teeth=[0,0,0,0], tolerance=tolerance);
       for (z = [-5, 15])
-      #translate([z,22,-20])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=40); 
+        translate([z,22,-20])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=60); 
     }
   }
 }
