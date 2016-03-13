@@ -25,20 +25,20 @@ module x_idler(idler_cutouts=true) {
   translate([width/2+offset_from_rail,i,outer_height/2])
     #cylinder(d=M5, h=40);
     
-  for ( i = [17.5, 18+(vwheel_r()*2)])
-  translate([-width/2,(vwheel_r()+10), i])
-    rotate([0,90,0])
-    {
-    #cylinder(d=M5, h=40);
-    translate([0,0,38-M5nutThickness])#cylinder(d=M5nut, h=M5nutThickness, $fn=6);
-    }
+  for ( i = [17.5, 24+(vwheel_r()*2)])
+    translate([-width/2,(vwheel_r()+10), i])
+      rotate([0,90,0])
+      {
+        #cylinder(d=M5, h=40);
+        translate([0,0,38-M5nutThickness])#cylinder(d=M5nut+tolerance*2, h=M5nutThickness, $fn=6);
+      }
 
   for ( i = [outer_height/2])
   translate([-width/2,-(vwheel_r()+10), i])
     rotate([0,90,0])
     {
     #cylinder(d=M5, h=40);
-    translate([0,0,38-M5nutThickness])#cylinder(d=M5nut, h=M5nutThickness, $fn=6);
+    translate([0,0,38-M5nutThickness])#cylinder(d=M5nut+tolerance*2, h=M5nutThickness, $fn=6);
     }
 
 
@@ -48,6 +48,7 @@ module x_idler(idler_cutouts=true) {
 }
 module x_motor() {
   x_idler(idler_cutouts=false);
+  translate([3,0,0])
   difference() {
     union() {
       translate([30/2+offset_from_rail, -60/2 - 49/2+4,outer_height-4/2])
@@ -64,6 +65,17 @@ module x_motor() {
           }
         }
     }
+      for (i = [-21])
+        translate([30/2+offset_from_rail+i, -60/2,outer_height/2])
+        {
+          translate([(-i/21)*4.5, 2,0])
+          cube([12,4,outer_height],center=true);
+          hull() {
+            cylinder(d=3, h=outer_height,center=true);
+            translate([0,-43,outer_height/2-4])
+              cylinder(d=3, h=4);
+          }
+        }
 
     translate([30/2+offset_from_rail, -60/2 - 49/2,outer_height-30])
       #linear_extrude(height=30)stepper_motor_mount(17, mochup=false, tol=tolerance);
