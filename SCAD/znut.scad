@@ -5,7 +5,7 @@ module znut(invert=false) {
   {
     difference() {
       cylinder(d=zRod + 12, h=20);
-      znut_holes();
+      #znut_holes();
       translate([0,14,10])
         cube([20,20,20], center=true);
     }
@@ -23,4 +23,5 @@ module znut_holes() {
     rotate([0,0,i])
       translate([6,0,0]) cylinder(d=M3-0.3, h=20);
 }
+
 include<inc/configuration.scad>
