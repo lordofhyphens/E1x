@@ -42,7 +42,7 @@ module x_idler(idler_cutouts=true) {
       }
 
 
-  #translate([shaft_offset[0],shaft_offset[1],outer_height-15])rotate([0,0,90])znut_holes();
+  #translate([shaft_offset[0],shaft_offset[1],outer_height-15])rotate([0,0,0])znut_holes();
 
   }
 }

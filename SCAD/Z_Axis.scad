@@ -147,14 +147,14 @@ module z_upper(height=25, tolerance=0.2, motor=true)
     for (y = [5]) 
       #translate([0,y,((height-3) / 2)+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=40);
     if (motor) {
-      translate([shaft_offset[0],shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
+      translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
     }
   }
 }
 translate([0,-100,0]) z_upper(height=23);
 translate([-50,-100,0]) mirror([1,0,0]) z_upper(height=23);
-z_lower(height=54, panel_height=3.17);
-translate([0,150,0])mirror([0,1,0]) z_lower(height=54, panel_height=3.17);
+*z_lower(height=54, panel_height=3.17);
+*translate([0,150,0])mirror([0,1,0]) z_lower(height=54, panel_height=3.17);
 
 use <inc/functions.scad>
 use <MCAD/motors.scad>

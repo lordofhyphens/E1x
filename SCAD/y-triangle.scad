@@ -6,9 +6,9 @@
 //lower-angle: 63.83953
 //upper-angle: 24.986961
 
-y1_length = 179;
-y2_length = (485+40 - 179);
-z_height = 368;
+y1_length = 149;
+y2_length = (485+40 - y1_length);
+z_height = 388;
 fudge_y=7;
 fudge_z=0;
 hyp1 = sqrt(pow((y1_length-fudge_y),2) + pow(z_height-fudge_z,2));
@@ -131,10 +131,16 @@ module lower_bracket(angles, support=true, tolerance=0.4)
 
     #translate([0,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,1], tolerance=tolerance);
     #translate([16,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0], tolerance=tolerance);
+    #translate([16,-13,6])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0], tolerance=tolerance);
     #translate([0,-25,-14])cylinder(r=M5/2 + tolerance, h=40);
     #translate([-20,-25,0])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
     #translate([-100,-100,-32.5])cube([200,200,20]);
   }
+  translate([6,-38,-11])
+    difference(){
+      cylinder(r=1, h=21.5);
+      cylinder(r=0.5, h=21.5);
+    }
 }
 include <inc/configuration.scad>
 include<inc/metric.scad>;

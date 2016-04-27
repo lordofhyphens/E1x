@@ -1,4 +1,6 @@
 use <inc/functions.scad>
+translate([-33,-23,10])rotate([0,0,90])import("T1_extruder_v0.9.stl");
+translate([-33,-23,0])rotate([0,0,90])linear_extrude(height=11)projection(cut=false)import("T1_extruder_v0.9.stl");
 
 tolerance=0.3;
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
@@ -62,7 +64,7 @@ module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=
 
     // gaps for attachment points
     for (j = [scaled_plate[0]/2 - 6, -scaled_plate[0]/2 + 6])
-      for (i = [10,-10])
+      for (i = [10,10])
         translate([j,i,0])
           #cube([3,10,30], center=true);
     if (wheels == 4)
@@ -121,7 +123,7 @@ module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=
       }
     }
     for (mnt = [0 : mountpoints-1]) 
-      translate([(((mountpoints-1)*plate[0])/(mountpoints+1))+(sepwidth*(mountpoints-1))/2,0, 0])
+      *translate([(((mountpoints-1)*plate[0])/(mountpoints+1))+(sepwidth*(mountpoints-1))/2,0, 0])
         translate([-(mnt*plate[1])/2-(sepwidth*mnt),shift[mnt],0])
         {
           #translate([0,-5,0])cylinder(r=8, h=20);
