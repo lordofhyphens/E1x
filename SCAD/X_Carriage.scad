@@ -1,6 +1,4 @@
 use <inc/functions.scad>
-translate([-33,-23,10])rotate([0,0,90])import("T1_extruder_v0.9.stl");
-translate([-33,-23,0])rotate([0,0,90])linear_extrude(height=11)projection(cut=false)import("T1_extruder_v0.9.stl");
 
 tolerance=0.3;
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
@@ -60,13 +58,27 @@ module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=
   scaled_plate = [plate[0]*(mountpoints-1) + (sepwidth*(mountpoints))+padding, plate[1], plate[2]];
 
   difference() {
+  union() 
+  {
     translate([0,0,scaled_plate[2]/2])roundcube(scaled_plate, center=true);
+    translate([-3,7,10])rotate([0,0,180])import("T1_extruder_v0.9.stl");
+    translate([-3,7,0])rotate([0,0,180])linear_extrude(height=11)projection(cut=false)import("T1_extruder_v0.9.stl");
+  }
 
     // gaps for attachment points
     for (j = [scaled_plate[0]/2 - 6, -scaled_plate[0]/2 + 6])
       for (i = [10,10])
         translate([j,i,0])
-          #cube([3,10,30], center=true);
+          #hull() {
+            translate([-(3 - 3/2)/2, -(10-3/2)/2, 0])
+            cylinder(d=3/2, h =50, center=true);
+            translate([-(3 - 3/2)/2, (10-3/2)/2, 0])
+            cylinder(d=3/2, h =50, center=true);
+            translate([(3 - 3/2)/2, -(10-3/2)/2, 0])
+            cylinder(d=3/2, h =50, center=true);
+            translate([(3 - 3/2)/2, (10-3/2)/2,0])
+            cylinder(d=3/2, h =50, center=true);
+          }
     if (wheels == 4)
     {
       translate([0,fudge_distance/2,0])
