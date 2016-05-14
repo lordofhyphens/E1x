@@ -170,6 +170,17 @@ module roundcube(dim, percent=20, center=false)
   z = dim[2];
 
   r = min(x, y) * (percent/100);
+  if (center) {
+  hull() {
+    revolve_x = (center ? [-0.5, 0.5] : [0, 1]);
+    revolve_y = (center ? [-0.5, 0.5] : [0, 1]);
+      for (i = revolve_x)
+        for (j = revolve_y)
+        translate([i*x - (2*i*r),j*y - (2*j*r)])
+          cylinder(r=r, h=z, center=center);
+  }
+  }
+  else {
   shift = (center ?  [0,0,0] :  [r,r,0]);
   translate(shift)
   hull() {
@@ -180,7 +191,9 @@ module roundcube(dim, percent=20, center=false)
         translate([i*x,j*y])
           cylinder(r=r, h=z, center=center);
   }
+  }
 }
+
 module filletcube(dims, r = 3, center = false, fillet_width=1.5, fillet_depth=0.2)
 {
   hull() {

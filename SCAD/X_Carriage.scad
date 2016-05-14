@@ -1,10 +1,17 @@
 use <inc/functions.scad>
+mirror([1,0,0])
+translate([-33,-20,-7])
+{
+rotate([0,0,90])linear_extrude(height=15+7)projection(cut=false)import("T1_extruder_v0.9.stl");
+translate([0,0,20])
+rotate([0,0,90])import("T1_extruder_v0.9.stl");
+}
 
 tolerance=0.3;
-mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
+mount_type="wades"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 measured_rail_edge_to_edge=58.82;
 bearing_to_vslot=10.10;
-fudge_distance=0;
+fudge_distance=1.5;
 wheel_separation = 40+(2*bearing_to_vslot)-fudge_distance;
 //wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
@@ -19,8 +26,13 @@ extruder_z = 52;
 rework_x_sep = 23;
 rework_y_sep = 23;
 wades_x_sep = 50;
-wades_y_sep = 0;
-prusa_x_sep = 30;
+wades_y_sep
+t = 0;put X_Carriage.stl
+trls
+assdaasdop  dfsdfasdasdasdasd
+p     <M-F4>
+prusa_x_sepranslate([0,0,47])
+ = 30;
 prusa_y_sep = 0;
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
 plate_y = wheel_separation + 20;
@@ -53,16 +65,15 @@ module standoff() {
   }
   }
 
-xcarriage(plate=plate,mountpoints=1, wheels=4);
+mirror([0,0,1])xcarriage(plate=plate,mountpoints=1, wheels=4);
 module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=35) {
   scaled_plate = [plate[0]*(mountpoints-1) + (sepwidth*(mountpoints))+padding, plate[1], plate[2]];
 
   difference() {
   union() 
   {
+    translate([0,0,scaled_plate[2]/2])roundcube(scaled_plate, percent=5, center=true);
     translate([0,0,scaled_plate[2]/2])roundcube(scaled_plate, center=true);
-    translate([-3,7,10])rotate([0,0,180])import("T1_extruder_v0.9.stl");
-    translate([-3,7,0])rotate([0,0,180])linear_extrude(height=11)projection(cut=false)import("T1_extruder_v0.9.stl");
   }
 
     // gaps for attachment points
