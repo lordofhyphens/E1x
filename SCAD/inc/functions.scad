@@ -163,37 +163,24 @@ module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1.5, tolerance=0.2) {
 /* 
   Cube with rounded edges.
 */
-module roundcube(dim, percent=20, center=false)
+module roundcube(dims, r = 3, center = false)
 {
-  x = dim[0];
-  y = dim[1];
-  z = dim[2];
+  hull() {
+    if (center)
+    {
+      translate([r -dims[0]/2,r - dims[1]/2,-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([r -dims[0]/2,(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]/2-(r),(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]/2-(r),r - (dims[1]/2),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
 
-  r = min(x, y) * (percent/100);
-  if (center) {
-  hull() {
-    revolve_x = (center ? [-0.5, 0.5] : [0, 1]);
-    revolve_y = (center ? [-0.5, 0.5] : [0, 1]);
-      for (i = revolve_x)
-        for (j = revolve_y)
-        translate([i*x - (2*i*r),j*y - (2*j*r)])
-          cylinder(r=r, h=z, center=center);
-  }
-  }
-  else {
-  shift = (center ?  [0,0,0] :  [r,r,0]);
-  translate(shift)
-  hull() {
-    revolve_x = (center ? [-0.5, 0.5] : [0, 1]);
-    revolve_y = (center ? [-0.5, 0.5] : [0, 1]);
-      for (i = revolve_x)
-        for (j = revolve_y)
-        translate([i*x,j*y])
-          cylinder(r=r, h=z, center=center);
-  }
+    } else {
+      translate([r,r,0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([r,dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]-(r),dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]-(r),r,0]) cylinder(r=r, h=dims[2], $fn=60);
+    }
   }
 }
-
 module filletcube(dims, r = 3, center = false, fillet_width=1.5, fillet_depth=0.2)
 {
   hull() {
