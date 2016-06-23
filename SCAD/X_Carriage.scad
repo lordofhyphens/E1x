@@ -2,16 +2,16 @@ use <inc/functions.scad>
 mirror([1,0,0])
 translate([-33,-20,-7])
 {
-rotate([0,0,90])linear_extrude(height=15+7)projection(cut=false)import("T1_extruder_v0.9.stl");
-translate([0,0,20])
-rotate([0,0,90])import("T1_extruder_v0.9.stl");
+  rotate([0,0,90])linear_extrude(height=15+7-9.4)projection(cut=false)import("T1_extruder_v0.9.stl");
+  translate([0,0,20-9.4])
+    rotate([0,0,90])import("T1_extruder_v0.9.stl");
 }
 
 tolerance=0.3;
 mount_type="wades"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 measured_rail_edge_to_edge=58.82;
 bearing_to_vslot=10.10;
-fudge_distance=1.5;
+fudge_distance=0;
 wheel_separation = 40+(2*bearing_to_vslot)-fudge_distance;
 //wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
@@ -22,17 +22,11 @@ wheel_offset = 20;
 wheel_od = 25;
 extruder_x = 35;
 extruder_z = 52;
-
+wheels = 3;
 rework_x_sep = 23;
 rework_y_sep = 23;
 wades_x_sep = 50;
-wades_y_sep
-t = 0;put X_Carriage.stl
-trls
-assdaasdop  dfsdfasdasdasdasd
-p     <M-F4>
-prusa_x_sepranslate([0,0,47])
- = 30;
+wades_y_sep = 30;
 prusa_y_sep = 0;
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
 plate_y = wheel_separation + 20;
@@ -65,7 +59,7 @@ module standoff() {
   }
   }
 
-mirror([0,0,1])xcarriage(plate=plate,mountpoints=1, wheels=4);
+mirror([0,0,1])xcarriage(plate=plate,mountpoints=1, wheels=wheels);
 module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=35) {
   scaled_plate = [plate[0]*(mountpoints-1) + (sepwidth*(mountpoints))+padding, plate[1], plate[2]];
 
@@ -90,11 +84,11 @@ module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=
             translate([(3 - 3/2)/2, (10-3/2)/2,0])
             cylinder(d=3/2, h =50, center=true);
           }
-    if (wheels == 4)
-    {
-      translate([0,fudge_distance/2,0])
-      { // holes for v wheel mounting
-        for (i = [1 , -1])
+    translate([0,fudge_distance/2,0])
+    { // holes for v wheel mounting
+      for (i = [1 , -1])
+
+        if (i == 1 || wheels == 4) {
           color("blue")translate([0,i*wheel_separation/2, 0]) 
           {
             #translate([-scaled_plate[0]/2 + M5nut, 0,0])
@@ -108,42 +102,13 @@ module xcarriage(plate, mountpoints=1, wheels=4, sepwidth=25, shift=[], padding=
               cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
             }
           }
-
-      }
-    } else if (wheels == 3) 
-    {
-      translate([0,fudge_distance/2,0])
-      { // holes for v wheel mounting
-        for (i = [1 , -1])
-        if (i == -1)
-        {
+        } else {
           color("blue")translate([0,i*wheel_separation/2, 0]) 
           {
-            #translate([-scaled_plate[0]/2 + M5nut, 0,0])
-            {
-              cylinder(r=M5/2 + tolerance, h=scaled_plate[2],  $fs=0.1);
-              cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
-            }
-            #translate([scaled_plate[0]/2 - M5nut,0,0])
-            {
-              cylinder(r=M5/2 + tolerance*2, h=scaled_plate[2],  $fs=0.1);
-              cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
-            }
+            cylinder(r=M5/2 + tolerance*2, h=scaled_plate[2],  $fs=0.1);
+            cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
           }
-        } else 
-        {
-          color("blue")translate([0,i*wheel_separation/2, 0]) 
-          {
-            #translate([0, 0,0])
-            {
-              cylinder(r=M5/2 + tolerance, h=scaled_plate[2],  $fs=0.1);
-              cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
-            }
-          }
-
         }
-      
-      }
     }
     for (mnt = [0 : mountpoints-1]) 
       *translate([(((mountpoints-1)*plate[0])/(mountpoints+1))+(sepwidth*(mountpoints-1))/2,0, 0])
