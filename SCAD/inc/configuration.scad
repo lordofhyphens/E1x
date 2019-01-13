@@ -77,4 +77,4 @@ length_to_hole=43;
 bearing_to_vslot=9.63;
 belt_z_space = 16;
 rail_separation = belt_z_space + x_rod_thickness + 2; // minimum space between the top and bottom 
-tolerance=0.2;
+tolerance=1;

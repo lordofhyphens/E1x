@@ -101,6 +101,51 @@ module z_lower(height, panel_height, motor=false)
   }
 }
 
+module z_upper_long(height=25, tolerance=0.2, motor=true)
+{
+  wall_width = 2;
+  length_to_hole=43;
+  depth=height-3;
+  tab_length=93;
+  fastener_hole=M5; 
+  base_length=77-13; 
+  // length from center of rod to center of extrusion
+  base_width=z_rod_to_extrusion+13+25;
+  back_wall_y=z_rod_to_extrusion+13+5;
+  difference() 
+  {
+    union() 
+    {
+      hull() 
+      { 
+      translate([25,0,0]) {
+          translate([0,2,0])translate([0,0,height/2])roundcube([80,32,height], r=3,center=true);
+          translate([0,28,height/2])roundcube([80,32,height], r=3,center=true);
+                            }
+      }
+        cylinder(r=17/2, h=height);
+    }
+    #translate([63,0,53])rotate([90,0,0])cylinder(r=47, h=100,center=true);
+    translate([0,0,3]) {
+      translate([-10,0,0])
+      #ext2040(l=height+5, depth=0.75, tolerance=tolerance);
+      cube([10,10,10],center=true);
+    }
+    #translate([0,13+5,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
+    #translate([0,13+5,20+3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,0,0], tolerance=tolerance);
+    for (z = [10, 30]) 
+        for (y = [48, 28, 0]) 
+            #translate([-20,y,z+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=20);
+    for (y = [5]) 
+      #translate([0,y,10+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=70);
+    for (y = [28]) 
+      #translate([0,y,-3])cylinder(r=M5/2 + tolerance, h=70);
+    if (motor) {
+      translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],0])linear_extrude(height=60)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
+    }
+      translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],5])linear_extrude(height=60)stepper_motor_mount(17, mochup=false, tolerance=tolerance+3);
+  }
+}
 module z_upper(height=25, tolerance=0.2, motor=true)
 {
   wall_width = 2;
@@ -151,8 +196,8 @@ module z_upper(height=25, tolerance=0.2, motor=true)
     }
   }
 }
-translate([0,-100,0]) z_upper(height=23);
-translate([-50,-100,0]) mirror([1,0,0]) z_upper(height=23);
+translate([0,-100,0]) z_upper_long(height=43);
+translate([-50,-100,0]) mirror([1,0,0]) z_upper_long(height=43);
 *z_lower(height=54, panel_height=3.17);
 *translate([0,150,0])mirror([0,1,0]) z_lower(height=54, panel_height=3.17);
 
