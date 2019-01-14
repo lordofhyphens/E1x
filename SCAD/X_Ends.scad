@@ -31,16 +31,16 @@ module x_idler(idler_cutouts=true) {
                       translate([-width/2,(vwheel_r()+10), i])
                           rotate([0,90,0])
                           {
-                              #cylinder(d=ECCENTRIC, h=40);
+                              #cylinder(d=M5, h=40);
+                              rotate([0,0,30])
                               translate([0,0,38-M5nutThickness])#cylinder(d=M5nut+tolerance*2, h=M5nutThickness, $fn=6);
                           }
 
-      for ( i = [17.5, 24+(vwheel_r()*2)])
-          translate([-width/2,-(vwheel_r()+10), i])
+      for ( i = [17.5, 22+(vwheel_r()*2)])
+          translate([-width/2,-(vwheel_r()+9.5), i])
               rotate([0,90,0])
               {
                   #cylinder(d=ECCENTRIC, h=40);
-                  translate([0,0,38-M5nutThickness])#cylinder(d=M5nut+tolerance*2, h=M5nutThickness, $fn=6);
               }
 
       #translate([5+shaft_offset[0],shaft_offset[1],outer_height-15])rotate([0,0,60])znut_holes(rod=8, holes=4);
