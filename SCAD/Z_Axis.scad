@@ -110,91 +110,94 @@ module z_upper_long(height=25, tolerance=0.2, motor=true)
   fastener_hole=M5; 
   base_length=77-13; 
   // length from center of rod to center of extrusion
-  base_width=z_rod_to_extrusion+13+25;
-  back_wall_y=z_rod_to_extrusion+13+5;
+  base_width=shaft_offset[0]+offset_from_rail+13+20;
+  back_wall_y=shaft_offset[1]+13+5;
   difference() 
   {
-    union() 
-    {
-      hull() 
-      { 
-      translate([25,0,0]) {
-          translate([0,2,0])translate([0,0,height/2])roundcube([80,32,height], r=3,center=true);
-          translate([0,28,height/2])roundcube([80,32,height], r=3,center=true);
-                            }
+      union() 
+      {
+          hull() 
+          { 
+              translate([base_width*.35,0,0]) {
+                  translate([0,2,0])translate([0,0,height/2])roundcube([base_width,32,height], r=3,center=true);
+                  translate([0,28,height/2])roundcube([base_width,32,height], r=3,center=true);
+              }
+          }
+          cylinder(r=17/2, h=height);
       }
-        cylinder(r=17/2, h=height);
-    }
-    #translate([63,0,53])rotate([90,0,0])cylinder(r=47, h=100,center=true);
-    translate([0,0,3]) {
-      translate([-10,0,0])
-      #ext2040(l=height+5, depth=0.75, tolerance=tolerance);
-      cube([10,10,10],center=true);
-    }
-    #translate([0,13+5,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
-    #translate([0,13+5,20+3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,0,0], tolerance=tolerance);
-    for (z = [10, 30]) 
-        for (y = [48, 28, 0]) 
-            #translate([-20,y,z+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=20);
-    for (y = [5]) 
-      #translate([0,y,10+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=70);
-    for (y = [28]) 
-      #translate([0,y,-3])cylinder(r=M5/2 + tolerance, h=70);
-    if (motor) {
-      translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],0])linear_extrude(height=60)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
-    }
-      translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],5])linear_extrude(height=60)stepper_motor_mount(17, mochup=false, tolerance=tolerance+3);
+      #translate([63,0,53])rotate([90,0,0])cylinder(r=47, h=100,center=true);
+      translate([0,0,3]) {
+          translate([-10,0,0])
+              #ext2040(l=height+5, depth=0.75, tolerance=tolerance);
+              cube([10,10,10],center=true);
+      }
+      #translate([0,13+5,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
+      #translate([0,13+5,20+3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,0,0], tolerance=tolerance);
+      for (z = [10, 30]) 
+          for (y = [48, 28, 0]) 
+              #translate([-20,y,z+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=20);
+              for (y = [5]) 
+                  #translate([0,y,10+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=70);
+                  for (y = [28]) 
+                      #translate([0,y,-3])cylinder(r=M5/2 + tolerance, h=70);
+                      translate([offset_from_rail, 0,0]) {
+                        echo("motor relative to origin:", offset_from_rail+ 5+shaft_offset[0],shaft_offset[1]);
+                          if (motor) {
+                              translate([shaft_offset[0]+5-10,shaft_offset[1],-1])linear_extrude(height=61)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
+                          }
+                          translate([shaft_offset[0]+5 -10,shaft_offset[1],6])linear_extrude(height=61)stepper_motor_mount(17, mochup=false, tolerance=tolerance+3);
+      }
   }
 }
 module z_upper(height=25, tolerance=0.2, motor=true)
 {
-  wall_width = 2;
-  length_to_hole=43;
-  depth=height-3;
-  tab_length=93;
-  fastener_hole=M5; 
-  base_length=77-13; 
-  // length from center of rod to center of extrusion
-  base_width=z_rod_to_extrusion+13+25;
-  back_wall_y=z_rod_to_extrusion+13+5;
-  difference() 
-  {
-    union() 
+    wall_width = 2;
+    length_to_hole=43;
+    depth=height-3;
+    tab_length=93;
+    fastener_hole=M5; 
+    base_length=77-13; 
+    // length from center of rod to center of extrusion
+    base_width=z_rod_to_extrusion+13+25;
+    back_wall_y=z_rod_to_extrusion+13+5;
+    difference() 
     {
-      hull() 
-      {
-        translate([0,2,0])translate([0,0,height/2])roundcube([30,32,height], r=3,center=true);
-        translate([0,28,height/2])roundcube([30,32,height], r=3,center=true);
-        cylinder(r=17/2, h= height);
-      }
-      if (motor) 
-      {
-        translate([0,-8,0])roundcube([shaft_offset[0]+20,45,3]);
-        for (i = [1.5, 44])
-        { 
-          translate([0,i,1]) hull()
+        union() 
+        {
+            hull() 
             {
-              translate([wall_width+12,-10+wall_width,height-wall_width-5])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
-              translate([-2*wall_width+(shaft_offset[0]+20),-10+wall_width,wall_width/2])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
-              translate([wall_width,-10+wall_width,wall_width])cube([wall_width*2,wall_width*2,wall_width*2],center=true);
+                translate([0,2,0])translate([0,0,height/2])roundcube([30,32,height], r=3,center=true);
+                translate([0,28,height/2])roundcube([30,32,height], r=3,center=true);
+                cylinder(r=17/2, h= height);
+            }
+            if (motor) 
+            {
+                translate([0,-8,0])roundcube([shaft_offset[0]+20,45,3]);
+                for (i = [1.5, 44])
+                { 
+                    translate([0,i,1]) hull()
+                    {
+                        translate([wall_width+12,-10+wall_width,height-wall_width-5])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
+                        translate([-2*wall_width+(shaft_offset[0]+20),-10+wall_width,wall_width/2])rotate([0,90,0])cylinder(r=wall_width,h=wall_width);
+                        translate([wall_width,-10+wall_width,wall_width])cube([wall_width*2,wall_width*2,wall_width*2],center=true);
+                    }
+                }
             }
         }
-      }
+        translate([0,0,3]) {
+            translate([-10,0,0])
+                #ext2040(l=26, depth=0.75, tolerance=tolerance);
+                cube([10,10,10],center=true);
+        }
+        #translate([0,13+5,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
+        for (y = [48, 28, 0]) 
+            #translate([-20,y,((height-3) / 2)+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
+            for (y = [5]) 
+                #translate([0,y,((height-3) / 2)+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=40);
+                if (motor) {
+                    translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
+                }
     }
-    translate([0,0,3]) {
-      translate([-10,0,0])
-      #ext2040(l=26, depth=0.75, tolerance=tolerance);
-      cube([10,10,10],center=true);
-    }
-    #translate([0,13+5,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
-    for (y = [48, 28, 0]) 
-      #translate([-20,y,((height-3) / 2)+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
-    for (y = [5]) 
-      #translate([0,y,((height-3) / 2)+3])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=40);
-    if (motor) {
-      translate([shaft_offset[0]-(1.2+11.3),shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance+0.5);
-    }
-  }
 }
 translate([0,-100,0]) z_upper_long(height=43);
 translate([-50,-100,0]) mirror([1,0,0]) z_upper_long(height=43);
